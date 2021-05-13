@@ -1,2 +1,98 @@
-# Ass6
-A Python Programing Bootcamp in Kinshasa, DRC, is interested to offering a scholarship to her  students, a class of over 500 students. They reached out to you to come to their rescue. The following are some of the requirements. There are 3 quizzes to do, all quizzes are worth  100 points each, there are two test each 100 points (Advanced and Expert) Python tests. There  are about 10 assignments on programming and there are also 3 mandatory zoom calls to attend  to help reinforce the materials. As a boot camp, they are looking to hire you as a Python developer to put their concept into a  tangible product, and into fruition. There are two types of Scholarships  1) Full scholarship - only obtained by students in Africa 2) Partial Scholarship. – only obtained by students in the diaspora and outside Africa The following are the requirements to earn a scholarship: i) For a student to get a scholarship, they must come from Africa ii) The student has to score an average of 80% for males. iii) The student has to score an average of 76% for females. iv) All the quizzes are added together, and the two test and the average are obtained. v) All the zoom calls attendance are scored based on participation and attendance at 9 points total attendance and participation vi) The programming assignments are also scored based on attempts and submissions  at 10 points totals. You are required to design a program to issue the scholarships. The program should accept  entry of: 1) Student first and last name 2) Student Id number (make up your own) 3) Student mailing Address/ City / Country and Region. For African Region accept “A” for  others accept “O” option 4) Student email 5) Students phone Number 6) Score obtained on Quiz, Quiz2, Quiz 3, Test 1 and Test 2 and calculate the Average 7) Display the score obtained from Zoom calls – [0 – 9] points 8) Display the score obtained from homework programming assignments [0 - 10] points 9) If the student is not based in Africa – don’t offer a scholarship. Only give to students in  Afric
+print("--------------------------------------------------")
+print("--------------CHRISTINE MOGAKA--------------------")
+print("----------INTRODUCTION TO PYTHON 2021-------------")
+print("----------------ASSIGNMENT 6----------------------")
+print("--------------------------------------------------")
+
+import awoc #to check countries
+import re #for regex
+
+names = input("Enter full name: ")
+country = input("Enter country: ")
+gender = str.lower(input("Enter gender(f for female and m for male): "))
+phone_number = input("Enter phone number(including country e.g +254..): ")
+
+print(names)
+print(phone_number)
+
+#Initialize the AWOC class- create an object.
+my_world = awoc.AWOC()
+
+#List of countries in Africa
+countries = my_world.get_countries_list_of('Africa')
+
+#Get the exact country code of the country given as input.
+real_code = my_world.get_country_phone_code(country)
+
+print(countries)
+
+#Create a list of country codes.
+africa_country_codes = []
+    
+for c in countries:
+    country_codes = my_world.get_country_phone_code(c)
+    africa_country_codes.append(country_codes)
+    
+print(africa_country_codes)
+#regular expression to return country code.
+def phone_regex():
+    match = (re.search(r'\+\d{3}', phone_number))
+    code = match.group()
+    return code[1:] #exclude the + dign
+phone_regex()
+
+def test_average():
+    global average_score
+    
+
+    #use float values
+    quiz1 = float(input("Enter quiz1: "))
+    quiz2 = float(input("Enter quiz2: "))
+    quiz3 = float(input("Enter quiz3: "))
+    test1 = float(input("Enter test1: "))
+    test2 = float(input("Enter test2: "))
+    average_score = (quiz1+quiz2+quiz3+test1+test2)/5
+    average_score = round(average_score,2)
+    return average_score
+   
+
+def participation():
+    assignment = int(input("Enter number of assignments submitted (should be between 0 and 10) : "))
+    zoom = int(input("Enter number of zoom sessions attended: "))
+    activity = str.lower(input("Was the student active (Yes/No): "))
+    
+    global zoom_score
+    global score
+    
+    if activity == "yes" and zoom <=3:
+        zoom_score = zoom *3
+    elif activity == "no" and zoom <= 3:
+        zoom_score = zoom *1
+   
+        
+    if assignment + zoom_score <= 5:
+        score = "Poor"
+    elif assignment + zoom_score <= 14:
+        score = "Good"
+    elif assignment + zoom_score <= 19:
+        score = "Excellent"
+    else:
+        score = print("Not valid")
+    
+    return score
+    
+
+if country in countries: #and phone_regex() == real_code: Use this to validate that phone number is from the country entered
+    test_average()
+    participation()
+    if gender == "m" and average_score >= 80 and score == "Excellent":
+        print("Your average score is "+ str(average_score) + " and your participation was "+ str(score) )
+        print("You deserve a scholarship")
+    elif gender == "f" and average_score >= 76 and score == "Excellent":
+        print("Your average score is "+ str(average_score) + " and your participation was "+ str(score) )
+        print("You deserve a scholarship")
+    else:
+        print("Your average score is "+ str(average_score) + " and your paticipation was "+ str(score) )
+        print("You are not eligible for a scholarship")
+else:
+    print("You are not eligible for a scholarship")
